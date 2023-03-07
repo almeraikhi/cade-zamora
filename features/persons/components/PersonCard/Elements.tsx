@@ -9,12 +9,15 @@ export const Container = styled.div`
   display: flex;
   flex-direction: row;
   gap: 10px;
+  :hover {
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.25);
+  }
 `;
 
 export const ImageSection = styled.div`
   min-width: 170px;
   height: 100%;
-  background-color: red;
+  background-color: #ea005e;
   position: relative;
 `;
 export const InfoSection = styled.div`

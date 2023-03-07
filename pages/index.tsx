@@ -1,20 +1,22 @@
-import { PersonCard } from '@/features/persons/components/PersonCard/PersonCard';
 import React from 'react';
 import { Inter } from 'next/font/google';
-
+import { CardsGrid } from '@/features/persons/components/CardsGrid';
+import styled from 'styled-components';
 const inter = Inter({ subsets: ['latin'] });
+
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+`;
 
 const Page = () => {
   return (
     <main className={inter.className}>
-      <PersonCard
-        id='1'
-        name='Ahmed Ali Khamees'
-        age={24}
-        gender='male'
-        address='13th Street, Khalifa City, Abu Dhabi'
-        imageUrl='/images/female_a.png'
-      />
+      <div>header</div>
+      <Container>
+        <CardsGrid />
+      </Container>
     </main>
   );
 };
