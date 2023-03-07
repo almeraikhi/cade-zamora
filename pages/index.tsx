@@ -1,22 +1,17 @@
 import React from 'react';
 import { Inter } from 'next/font/google';
 import { CardsGrid } from '@/features/persons/components/CardsGrid';
-import styled from 'styled-components';
-const inter = Inter({ subsets: ['latin'] });
+import { Header } from '@/components/composite/Header';
 
-const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  width: 100%;
-`;
+const inter = Inter({ subsets: ['latin'] });
 
 const Page = () => {
   return (
     <main className={inter.className}>
-      <div>header</div>
-      <Container>
+      <Header />
+      <div style={{ paddingTop: 50 }}>
         <CardsGrid />
-      </Container>
+      </div>
     </main>
   );
 };
