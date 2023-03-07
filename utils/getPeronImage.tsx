@@ -32,6 +32,7 @@ export const getPersonImage = ({ name, imageUrl }: GetPersonImageProps) => {
         alignItems: 'center',
         justifyContent: 'center',
         color: '#fff',
+        backgroundColor: '#ea005e',
       }}
     >
       <Typography variant='h3'>{getInitials(name)}</Typography>
