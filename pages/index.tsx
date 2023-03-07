@@ -1,4 +1,4 @@
-import { PersonCard } from '@/features/persons/components/PersonCard';
+import { PersonCard } from '@/features/persons/components/PersonCard/PersonCard';
 import React from 'react';
 import { Inter } from 'next/font/google';
 
