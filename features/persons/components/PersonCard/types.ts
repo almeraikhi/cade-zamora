@@ -4,5 +4,5 @@ export type Person = {
   age: number;
   gender: string;
   address: string;
-  imageUrl?: string;
+  imageUrl: string | null;
 };

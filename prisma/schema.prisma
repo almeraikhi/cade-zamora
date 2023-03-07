@@ -17,9 +17,12 @@ enum Gender {
 }
 
 model Person {
-  id      String @id @default(uuid())
-  name    String
-  age     Int
-  gender  Gender
-  address String
+  id        String   @id @default(uuid())
+  name      String
+  age       Int
+  gender    Gender
+  address   String
+  imageUrl  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
