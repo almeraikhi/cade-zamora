@@ -10,10 +10,12 @@ export const Backdrop = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: ${({ theme }) => theme.zIndex.backdrop};
 `;
 
 export const Paper = styled.div`
   background-color: #fff;
   padding: 25px;
   border-radius: 8px;
+  z-index: ${({ theme }) => theme.zIndex.modal};
 `;

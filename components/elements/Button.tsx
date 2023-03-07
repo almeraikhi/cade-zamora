@@ -3,22 +3,20 @@ import styled from 'styled-components';
 import { Typography } from './Typography';
 
 const DefaultContainer = styled.div`
-  display: inline-block;
+  display: inline-flex;
+  box-sizing: border-box;
   border-radius: 4px;
-  background-color: rgba(0, 0, 0, 0.87);
-  color: #fff;
+  background-color: ${({ theme }) => theme.palette.primary.main};
+  color: ${({ theme }) => theme.palette.primary.contrastText};
   padding: 10px 18px;
   cursor: pointer;
-  max-height: 30px;
-  min-height: 30px;
-  display: flex;
   align-items: center;
 `;
 
 const WireButtonContainer = styled(DefaultContainer)`
   background-color: transparent;
-  color: rgba(0, 0, 0, 0.87);
-  border: 1px solid rgba(0, 0, 0, 0.87);
+  color: #fff;
+  border: 1px solid #fff;
 `;
 
 export type ButtonProps = {
