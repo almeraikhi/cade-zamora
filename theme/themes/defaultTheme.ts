@@ -19,6 +19,10 @@ export const defaultTheme: Theme = {
     gray: {
       '6': '#000000',
     },
+    error: {
+      main: '#E81123',
+      contrastText: '#fff',
+    },
   },
   zIndex: {
     modal: 1300,

@@ -7,7 +7,10 @@ export const ImagePreviewArea = styled.div`
 `;
 
 export const UploadPrompt = styled.div`
-  opacity: 1;
+  opacity: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: absolute;
   top: 0;
   left: 0;

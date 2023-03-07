@@ -19,6 +19,10 @@ export type Theme = {
     gray: {
       '6': string;
     };
+    error: {
+      main: string;
+      contrastText: string;
+    };
   };
   zIndex: {
     modal: 1300;

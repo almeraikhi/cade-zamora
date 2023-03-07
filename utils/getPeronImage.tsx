@@ -33,6 +33,7 @@ export const getPersonImage = ({ name, imageUrl }: GetPersonImageProps) => {
         justifyContent: 'center',
         color: '#fff',
         backgroundColor: '#ea005e',
+        textTransform: 'uppercase',
       }}
     >
       <Typography variant='h3'>{getInitials(name)}</Typography>

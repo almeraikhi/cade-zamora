@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Typography } from './Typography';
 
-const DefaultContainer = styled.div`
+const DefaultContainer = styled.button`
   display: inline-flex;
   box-sizing: border-box;
   border-radius: 4px;
@@ -11,6 +11,10 @@ const DefaultContainer = styled.div`
   padding: 10px 18px;
   cursor: pointer;
   align-items: center;
+  :disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 `;
 
 const WireButtonContainer = styled(DefaultContainer)`
@@ -22,7 +26,10 @@ const WireButtonContainer = styled(DefaultContainer)`
 export type ButtonProps = {
   children: string;
   variant?: 'default' | 'wire';
-};
+} & React.DetailedHTMLProps<
+  React.ButtonHTMLAttributes<HTMLButtonElement>,
+  HTMLButtonElement
+>;
 
 /**
  * Function to get the different style of button based on variant
@@ -38,10 +45,15 @@ const getContainer = (variant: string) => {
   }
 };
 
-export const Button = ({ children, variant = 'default' }: ButtonProps) => {
+export const Button = ({
+  children,
+  variant = 'default',
+  ref,
+  ...props
+}: ButtonProps) => {
   const Container = getContainer(variant);
   return (
-    <Container>
+    <Container {...props}>
       <Typography>{children}</Typography>
     </Container>
   );

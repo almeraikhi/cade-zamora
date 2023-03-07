@@ -9,7 +9,6 @@ export type ImageUploadProps = {
 };
 
 export const ImageUpload = (props: ImageUploadProps) => {
-  // TODO: Display current image
   return (
     <ImagePreviewArea>
       {getPersonImage(props)}
