@@ -1,12 +1,12 @@
-import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
 import { ThemeProvider } from 'styled-components';
 import { useTheme } from '@/theme';
 import { Inter } from 'next/font/google';
+import { trpc } from '@/utils/trpc';
 
 const inter = Inter({ subsets: ['latin'] });
 
-export default function App({ Component, pageProps }: AppProps) {
+function App({ Component, pageProps }: AppProps) {
   const theme = useTheme();
 
   return (
@@ -24,3 +24,5 @@ export default function App({ Component, pageProps }: AppProps) {
     </ThemeProvider>
   );
 }
+
+export default trpc.withTRPC(App);

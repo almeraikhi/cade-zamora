@@ -2,10 +2,14 @@ import React, { useEffect } from 'react';
 import { CardsGrid } from '@/features/persons/components/CardsGrid';
 import { Header } from '@/components/composite/Header';
 import { CreatePersonModal } from '@/features/persons/components/CreatePerson/CreatePersonModal';
-import { useTheme } from '@/theme';
+import { trpc } from '@/utils/trpc';
 
 const Page = () => {
-  const theme = useTheme();
+  const { data } = trpc.healthcheck.useQuery();
+
+  useEffect(() => {
+    console.log('data', data);
+  }, [data]);
 
   return (
     <>
