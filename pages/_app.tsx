@@ -16,7 +16,7 @@ function App({ Component, pageProps }: AppProps) {
         style={{
           background: theme.palette.background.default,
           color: theme.palette.text.primary,
-          height: '100vh',
+          height: '100%',
         }}
       >
         <Component {...pageProps} />

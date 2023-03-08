@@ -53,7 +53,7 @@ export const Button = ({
 }: ButtonProps) => {
   const Container = getContainer(variant);
   return (
-    <Container {...props}>
+    <Container {...props} type={props.type ?? 'button'}>
       <Typography>{children}</Typography>
     </Container>
   );

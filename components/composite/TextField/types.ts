@@ -1,6 +1,6 @@
 export type TextFieldProps = {
   label: string;
-  error?: boolean;
+  required?: boolean;
   errorMessage?: string;
 } & React.DetailedHTMLProps<
   React.InputHTMLAttributes<HTMLInputElement>,

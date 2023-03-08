@@ -1,67 +1,88 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ImageUpload } from '../ImageUpload/ImageUpload';
-import styled from 'styled-components';
 import { TextField } from '@/components/composite/TextField/TextField';
 import { Button } from '@/components/elements';
 import { Form } from '@/components/elements/Form';
 import { useFormik } from 'formik';
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  padding: 10px;
-  width: 550px;
-`;
-
-const FieldsContainer = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-`;
-
-const ImageContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const ButtonArea = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  padding-right: 10px;
-`;
+import { trpc } from '@/utils/trpc';
+import { Gender } from '@prisma/client';
+import { createPersonStore } from '../../stores/createPersonStore';
+import {
+  ButtonArea,
+  Container,
+  FieldsContainer,
+  ImageContainer,
+} from './Elements';
+import { toFormikValidationSchema } from 'zod-formik-adapter';
+import { addInputSchema } from '@/dtos/person';
 
 export const CreatePersonForm = () => {
-  const { values, handleChange } = useFormik({
+  const setIsOpen = createPersonStore.set.isOpen;
+  // initialize the context to be able to invalidate our query
+  const context = trpc.useContext();
+
+  // initialize the mutation
+  const addPerson = trpc.person.add.useMutation({
+    onSuccess: () => {
+      // it will re-fetch the data from the server after the mutation is done successfully
+      context.person.getAll.invalidate();
+      setIsOpen(false); // close the modal
+    },
+  });
+  const { values, errors, handleChange, handleSubmit } = useFormik({
+    validationSchema: toFormikValidationSchema(addInputSchema),
     initialValues: {
       name: '',
       age: 0,
-      gender: '',
+      gender: '' as Gender,
       address: '',
     },
-    onSubmit: () => {},
+    onSubmit: (values) => {
+      addPerson.mutate(values);
+    },
   });
+
+  useEffect(() => {
+    console.log('errors', errors);
+  }, [errors]);
+
   return (
-    <Form>
+    <Form onSubmit={handleSubmit}>
       <Container>
         <FieldsContainer>
           <TextField
+            required
             label='Name'
             name='name'
             value={values.name}
             onChange={handleChange}
+            errorMessage={errors.name}
           />
           <TextField
+            required
             type='number'
             label='Age'
             name='age'
             value={values.age}
             onChange={handleChange}
+            errorMessage={errors.age}
           />
-          <TextField label='Gender' />
-          <TextField label='Address' />
+          <TextField
+            required
+            label='Gender'
+            name='gender'
+            value={values.gender}
+            onChange={handleChange}
+            errorMessage={errors.gender}
+          />
+          <TextField
+            required
+            label='Address'
+            name='address'
+            value={values.address}
+            onChange={handleChange}
+            errorMessage={errors.address}
+          />
         </FieldsContainer>
         <ImageContainer>
           <ImageUpload name={values.name} imageUrl='' />
