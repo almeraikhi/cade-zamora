@@ -11,6 +11,7 @@ export const addInputSchema = z.object({
     },
   }),
   address: z.string(),
+  imageUrl: z.string().optional(),
 });
 
 export const updateInputSchema = addInputSchema.extend({ id: z.string() });

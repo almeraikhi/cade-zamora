@@ -18,10 +18,12 @@ import { addInputSchema } from '@/dtos/person';
 import { MenuItem } from '@mui/material';
 import { SelectField } from '@/components/composite/SelectField/SelectField';
 import { TextField } from '@/components/composite/TextField/TextField';
-import { PersonForm } from '../PersonForm/PersonForm';
+import { imageUploadStore } from '../ImageUpload/imageUploadStore';
+import axios from 'axios';
 
 export const CreatePersonForm = () => {
   const [hasErrors, setHasErrors] = useState(false);
+  const image = imageUploadStore.use.image();
 
   const setIsOpen = createPersonStore.set.isOpen;
   // initialize the context to be able to invalidate our query
@@ -42,8 +44,23 @@ export const CreatePersonForm = () => {
       age: 0,
       gender: 'unspecified' as Gender,
       address: '',
+      imageUrl: '' as string | undefined,
     },
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
+      if (image) {
+        const formData = new FormData();
+        formData.append('image', image);
+        const { data } = await axios.post<{ path: string }>(
+          // TODO: change this to be dynamic
+          'http://localhost:3000/api/upload',
+          formData
+        );
+
+        values.imageUrl = data.path;
+      } else {
+        values.imageUrl = undefined;
+      }
+
       addPerson.mutate(values);
     },
   });
@@ -98,7 +115,7 @@ export const CreatePersonForm = () => {
           />
         </FieldsContainer>
         <ImageContainer>
-          <ImageUpload name={values.name} imageUrl='' />
+          <ImageUpload name={values.name} imageUrl='' color='' />
         </ImageContainer>
       </Container>
       <ButtonArea>

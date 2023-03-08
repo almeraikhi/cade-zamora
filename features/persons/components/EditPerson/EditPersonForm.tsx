@@ -21,9 +21,11 @@ import { useUpdatePerson } from '../../api/updatePerson';
 import { useOpenDeleteConfirmationModal } from '@/features/hooks/useOpenDeleteConfirmationModal';
 import { SelectField } from '@/components/composite/SelectField/SelectField';
 import { MenuItem } from '@mui/material';
+import { imageUploadStore } from '../ImageUpload/imageUploadStore';
+import axios from 'axios';
 
 export interface EditPersonFormProps {
-  initialData: PersonGetOneOutput;
+  initialData: PersonGetOneOutput & { imageUrl: string | undefined };
 }
 
 export const EditPersonForm = ({ initialData }: EditPersonFormProps) => {
@@ -31,6 +33,7 @@ export const EditPersonForm = ({ initialData }: EditPersonFormProps) => {
   const openConfirmationModal = useOpenDeleteConfirmationModal();
   const updatePerson = useUpdatePerson();
   const [hasErrors, setHasErrors] = useState(false);
+  const image = imageUploadStore.use.image();
 
   const { values, errors, handleChange, handleSubmit, setValues } = useFormik({
     validationSchema: toFormikValidationSchema(addInputSchema),
@@ -40,11 +43,26 @@ export const EditPersonForm = ({ initialData }: EditPersonFormProps) => {
       age: 0,
       gender: '' as Gender,
       address: '',
-      imageUrl: '' as string | null,
+      imageUrl: '' as string | undefined,
       color: '',
     },
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       if (!initialData) return;
+
+      if (image) {
+        const formData = new FormData();
+        formData.append('image', image);
+        const { data } = await axios.post<{ path: string }>(
+          // TODO: change this to be dynamic
+          'http://localhost:3000/api/upload',
+          formData
+        );
+
+        values.imageUrl = data.path;
+      } else {
+        values.imageUrl = undefined;
+      }
+
       updatePerson.mutate({ id: initialData.id, ...values });
     },
   });

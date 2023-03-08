@@ -4,7 +4,7 @@ import Image from 'next/image';
 
 export interface GetPersonImageProps {
   name: string;
-  imageUrl: string | null;
+  imageUrl?: string;
 }
 
 /**
