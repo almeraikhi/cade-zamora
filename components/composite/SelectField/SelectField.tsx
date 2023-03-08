@@ -1,29 +1,22 @@
-import React, { useRef } from 'react';
-import { Label, StyledInput, Underline } from './Elements';
-import { TextFieldProps } from './types';
+import { FormControl, InputLabel, Select, SelectProps } from '@mui/material';
+import FormHelperText from '@mui/material/FormHelperText';
+import React from 'react';
 
-export const SelectField = React.forwardRef<HTMLInputElement, TextFieldProps>(
-  ({ label, errorMessage, ...props }, ref) => {
-    const tmpRef = useRef<React.DetailedHTMLProps<
-      React.SelectHTMLAttributes<HTMLSelectElement>,
-      HTMLSelectElement
-    > | null>(null);
+export interface SelectFieldProps extends SelectProps {
+  label?: string;
+  errorMessage?: string;
+}
 
-    return (
-      <div style={{ boxSizing: 'border-box' }}>
-        <Label>
-          {label} {props.required && '*'}
-        </Label>
-        {/* <StyledInput ref={ref as any} {...props} type="" /> */}
-        <div>{tmpRef.current?.value}</div>
-        <select ref={tmpRef as any} value='this is my value'>
-          test
-        </select>
-        <Underline />
-        {errorMessage && <Label>{errorMessage}</Label>}
-      </div>
-    );
-  }
-);
-
-SelectField.displayName = 'SelectField';
+export const SelectField = ({
+  label,
+  errorMessage,
+  ...props
+}: SelectFieldProps) => {
+  return (
+    <FormControl variant='standard'>
+      <InputLabel>Gender</InputLabel>
+      <Select {...props} error={Boolean(errorMessage)} variant='standard' />
+      {Boolean(errorMessage) && <FormHelperText>{errorMessage}</FormHelperText>}
+    </FormControl>
+  );
+};

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { ImageUpload } from '../ImageUpload/ImageUpload';
-import { TextField } from '@/components/composite/TextField/TextField';
+// import { TextField } from '@/components/composite/TextField/TextField';
 import { Button } from '@/components/elements';
 import { Form } from '@/components/elements/Form';
 import { useFormik } from 'formik';
@@ -15,7 +15,9 @@ import {
 } from './Elements';
 import { toFormikValidationSchema } from 'zod-formik-adapter';
 import { addInputSchema } from '@/dtos/person';
+import { MenuItem } from '@mui/material';
 import { SelectField } from '@/components/composite/SelectField/SelectField';
+import { TextField } from '@/components/composite/TextField/TextField';
 
 export const CreatePersonForm = () => {
   const setIsOpen = createPersonStore.set.isOpen;
@@ -35,7 +37,7 @@ export const CreatePersonForm = () => {
     initialValues: {
       name: '',
       age: 0,
-      gender: '' as Gender,
+      gender: 'unspecified' as Gender,
       address: '',
     },
     onSubmit: (values) => {
@@ -51,7 +53,6 @@ export const CreatePersonForm = () => {
     <Form onSubmit={handleSubmit}>
       <Container>
         <FieldsContainer>
-          <SelectField label='ptoato' />
           <TextField
             required
             label='Name'
@@ -67,23 +68,27 @@ export const CreatePersonForm = () => {
             name='age'
             value={values.age}
             onChange={handleChange}
-            errorMessage={errors.age}
+            errorMessage={errors.name}
           />
-          <TextField
+          <SelectField
+            label='gender'
             required
-            label='Gender'
+            errorMessage={errors.gender}
             name='gender'
             value={values.gender}
             onChange={handleChange}
-            errorMessage={errors.gender}
-          />
+          >
+            <MenuItem value='male'>Male</MenuItem>
+            <MenuItem value='female'>Female</MenuItem>
+            <MenuItem value='unspecified'>unspecified</MenuItem>
+          </SelectField>
           <TextField
             required
             label='Address'
             name='address'
             value={values.address}
             onChange={handleChange}
-            errorMessage={errors.address}
+            errorMessage={errors.name}
           />
         </FieldsContainer>
         <ImageContainer>

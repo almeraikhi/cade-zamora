@@ -19,6 +19,8 @@ import { PersonGetOneOutput } from '@/server/client';
 import { editPersonStore } from '../../stores/editPersonStore';
 import { useUpdatePerson } from '../../api/updatePerson';
 import { useOpenDeleteConfirmationModal } from '@/features/hooks/useOpenDeleteConfirmationModal';
+import { SelectField } from '@/components/composite/SelectField/SelectField';
+import { MenuItem } from '@mui/material';
 
 export interface EditPersonFormProps {
   initialData: PersonGetOneOutput;
@@ -80,23 +82,27 @@ export const EditPersonForm = ({ initialData }: EditPersonFormProps) => {
             name='age'
             value={values.age}
             onChange={handleChange}
-            errorMessage={errors.age}
+            errorMessage={errors.name}
           />
-          <TextField
+          <SelectField
+            label='gender'
             required
-            label='Gender'
+            errorMessage={errors.gender}
             name='gender'
             value={values.gender}
             onChange={handleChange}
-            errorMessage={errors.gender}
-          />
+          >
+            <MenuItem value='male'>Male</MenuItem>
+            <MenuItem value='female'>Female</MenuItem>
+            <MenuItem value='unspecified'>unspecified</MenuItem>
+          </SelectField>
           <TextField
             required
             label='Address'
             name='address'
             value={values.address}
             onChange={handleChange}
-            errorMessage={errors.address}
+            errorMessage={errors.name}
           />
         </FieldsContainer>
         <ImageContainer>
