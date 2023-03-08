@@ -16,11 +16,11 @@ export const EditPersonModal = () => {
   );
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return null;
   }
 
   if (!data) {
-    return <div>Not found</div>;
+    return null;
   }
 
   return (

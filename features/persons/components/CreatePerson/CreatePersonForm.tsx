@@ -15,6 +15,7 @@ import {
 } from './Elements';
 import { toFormikValidationSchema } from 'zod-formik-adapter';
 import { addInputSchema } from '@/dtos/person';
+import { SelectField } from '@/components/composite/SelectField/SelectField';
 
 export const CreatePersonForm = () => {
   const setIsOpen = createPersonStore.set.isOpen;
@@ -50,6 +51,7 @@ export const CreatePersonForm = () => {
     <Form onSubmit={handleSubmit}>
       <Container>
         <FieldsContainer>
+          <SelectField label='ptoato' />
           <TextField
             required
             label='Name'
