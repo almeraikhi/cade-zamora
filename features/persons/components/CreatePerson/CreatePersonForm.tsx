@@ -23,9 +23,10 @@ import axios from 'axios';
 
 export const CreatePersonForm = () => {
   const [hasErrors, setHasErrors] = useState(false);
-  const image = imageUploadStore.use.image();
+  const [toBeUploadedImage, setToBeUploadedImage] = useState<File | null>(null);
 
   const setIsOpen = createPersonStore.set.isOpen;
+  const isOpen = createPersonStore.use.isOpen();
   // initialize the context to be able to invalidate our query
   const context = trpc.useContext();
 
@@ -37,33 +38,44 @@ export const CreatePersonForm = () => {
       setIsOpen(false); // close the modal
     },
   });
-  const { values, errors, handleChange, handleSubmit } = useFormik({
-    validationSchema: toFormikValidationSchema(addInputSchema),
-    initialValues: {
-      name: '',
-      age: 0,
-      gender: 'unspecified' as Gender,
-      address: '',
-      imageUrl: '' as string | undefined,
-    },
-    onSubmit: async (values) => {
-      if (image) {
-        const formData = new FormData();
-        formData.append('image', image);
-        const { data } = await axios.post<{ path: string }>(
-          // TODO: change this to be dynamic
-          'http://localhost:3000/api/upload',
-          formData
-        );
+  const { values, setValues, errors, handleChange, handleSubmit, resetForm } =
+    useFormik({
+      validationSchema: toFormikValidationSchema(addInputSchema),
+      initialValues: {
+        name: '',
+        age: 0,
+        gender: 'unspecified' as Gender,
+        address: '',
+        imageUrl: '' as string | null,
+      },
+      onSubmit: async (values) => {
+        if (toBeUploadedImage) {
+          const formData = new FormData();
+          formData.append('image', toBeUploadedImage);
+          const { data } = await axios.post<{ path: string }>(
+            // TODO: change this to be dynamic
+            'http://localhost:3000/api/upload',
+            formData
+          );
+          imageUploadStore.set.image(null);
 
-        values.imageUrl = data.path;
-      } else {
-        values.imageUrl = undefined;
-      }
+          values.imageUrl = data.path;
+        } else {
+          values.imageUrl = null;
+        }
 
-      addPerson.mutate(values);
-    },
-  });
+        addPerson.mutate(values);
+      },
+    });
+
+  const handleImagePreview = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files?.length === 0) return;
+    const file = event.target.files?.[0];
+    if (!file) return;
+    const fileLoaded = URL.createObjectURL(file);
+    setToBeUploadedImage(file);
+    setValues({ ...values, imageUrl: fileLoaded });
+  };
 
   /**
    * When the errors change, update the `hasErrors` state
@@ -71,6 +83,13 @@ export const CreatePersonForm = () => {
   useEffect(() => {
     setHasErrors(Object.keys(errors).length > 0);
   }, [errors]);
+
+  /**
+   * Initialize form on mount
+   */
+  useEffect(() => {
+    resetForm();
+  }, [isOpen]);
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -115,7 +134,12 @@ export const CreatePersonForm = () => {
           />
         </FieldsContainer>
         <ImageContainer>
-          <ImageUpload name={values.name} imageUrl='' color='' />
+          <ImageUpload
+            name={values.name}
+            imageUrl={values.imageUrl}
+            color=''
+            onInputChange={handleImagePreview}
+          />
         </ImageContainer>
       </Container>
       <ButtonArea>

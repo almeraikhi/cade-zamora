@@ -11,6 +11,7 @@
     "start": "next start",
     "lint": "next lint",
     "dx": "yarn db:generate && yarn db:push && yarn db:seed",
+    "db:up": "docker compose -f ./integrations/docker-compose.yaml up -d",
     "db:seed": "prisma db seed",
     "db:generate": "prisma generate",
     "db:push": "prisma db push --skip-generate --accept-data-loss --force-reset",

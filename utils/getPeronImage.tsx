@@ -1,10 +1,11 @@
 import { Typography } from '@/components/elements/Typography';
 import { getInitials } from '@/utils/getInitials';
 import Image from 'next/image';
+import { useEffect } from 'react';
 
 export interface GetPersonImageProps {
   name: string;
-  imageUrl?: string;
+  imageUrl: string | null;
 }
 
 /**

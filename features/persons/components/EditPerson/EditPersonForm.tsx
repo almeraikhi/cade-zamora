@@ -25,7 +25,7 @@ import { imageUploadStore } from '../ImageUpload/imageUploadStore';
 import axios from 'axios';
 
 export interface EditPersonFormProps {
-  initialData: PersonGetOneOutput & { imageUrl: string | undefined };
+  initialData: PersonGetOneOutput;
 }
 
 export const EditPersonForm = ({ initialData }: EditPersonFormProps) => {
@@ -33,39 +33,47 @@ export const EditPersonForm = ({ initialData }: EditPersonFormProps) => {
   const openConfirmationModal = useOpenDeleteConfirmationModal();
   const updatePerson = useUpdatePerson();
   const [hasErrors, setHasErrors] = useState(false);
-  const image = imageUploadStore.use.image();
+  const [toBeUploadedImage, setToBeUploadedImage] = useState<File | null>(null);
 
-  const { values, errors, handleChange, handleSubmit, setValues } = useFormik({
-    validationSchema: toFormikValidationSchema(addInputSchema),
-    // these will act as placeholder values
-    initialValues: {
-      name: '',
-      age: 0,
-      gender: '' as Gender,
-      address: '',
-      imageUrl: '' as string | undefined,
-      color: '',
-    },
-    onSubmit: async (values) => {
-      if (!initialData) return;
+  const { values, errors, handleChange, handleSubmit, setValues, resetForm } =
+    useFormik({
+      validationSchema: toFormikValidationSchema(addInputSchema),
+      // these will act as placeholder values
+      initialValues: {
+        name: '',
+        age: 0,
+        gender: '' as Gender,
+        address: '',
+        imageUrl: '' as string | null,
+        color: '',
+      },
+      onSubmit: async (values) => {
+        if (!initialData) return;
 
-      if (image) {
-        const formData = new FormData();
-        formData.append('image', image);
-        const { data } = await axios.post<{ path: string }>(
-          // TODO: change this to be dynamic
-          'http://localhost:3000/api/upload',
-          formData
-        );
+        if (toBeUploadedImage) {
+          const formData = new FormData();
+          formData.append('image', toBeUploadedImage);
+          const { data } = await axios.post<{ path: string }>(
+            // TODO: change this to be dynamic
+            'http://localhost:3000/api/upload',
+            formData
+          );
 
-        values.imageUrl = data.path;
-      } else {
-        values.imageUrl = undefined;
-      }
+          values.imageUrl = data.path;
+        }
 
-      updatePerson.mutate({ id: initialData.id, ...values });
-    },
-  });
+        updatePerson.mutate({ id: initialData.id, ...values });
+      },
+    });
+
+  const handleImagePreview = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files?.length === 0) return;
+    const file = event.target.files?.[0];
+    if (!file) return;
+    const fileLoaded = URL.createObjectURL(file);
+    setToBeUploadedImage(file);
+    setValues({ ...values, imageUrl: fileLoaded });
+  };
 
   /**
    * When the errors change, update the `hasErrors` state
@@ -82,6 +90,10 @@ export const EditPersonForm = ({ initialData }: EditPersonFormProps) => {
     const { name, age, gender, address, imageUrl, color } = initialData;
     setValues({ name, age, gender, address, imageUrl, color });
   }, [initialData, isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) resetForm();
+  }, [isOpen]);
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -130,6 +142,7 @@ export const EditPersonForm = ({ initialData }: EditPersonFormProps) => {
             name={values.name}
             imageUrl={values.imageUrl}
             color={values.color}
+            onInputChange={handleImagePreview}
           />
         </ImageContainer>
       </Container>

@@ -6,24 +6,29 @@ import { imageUploadStore } from './imageUploadStore';
 
 export type ImageUploadProps = {
   name: string;
-  imageUrl?: string;
+  imageUrl: string | null;
   color: string;
+  onInputChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 export const ImageUpload = (props: ImageUploadProps) => {
-  const [tmpImage, setTmpImage] = useState<string | undefined>();
+  // const [tmpImage, setTmpImage] = useState<string | undefined>();
 
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!event.target.files) return;
-    const file = event.target.files[0];
-    // keep the file in the store for later use with the forms
-    imageUploadStore.set.image(file);
-    // create a url to display the image
-    const fileLoaded = URL.createObjectURL(file);
-    setTmpImage(fileLoaded);
-  };
+  // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (!event.target.files) return;
+  //   const file = event.target.files[0];
+  //   // keep the file in the store for later use with the forms
+  //   imageUploadStore.set.image(file);
+  //   // create a url to display the image
+  //   const fileLoaded = URL.createObjectURL(file);
+  //   setTmpImage(fileLoaded);
+  // };
+
+  useEffect(() => {
+    console.log('image url', props.imageUrl);
+  }, [props.imageUrl]);
 
   const handleClick = () => {
     inputRef.current?.click();
@@ -31,7 +36,7 @@ export const ImageUpload = (props: ImageUploadProps) => {
 
   return (
     <ImagePreviewArea>
-      {getPersonImage({ ...props, imageUrl: tmpImage ?? props.imageUrl })}
+      {getPersonImage(props)}
       <UploadPrompt>
         <Button onClick={handleClick} variant='wire'>
           Browse
@@ -42,7 +47,7 @@ export const ImageUpload = (props: ImageUploadProps) => {
         ref={inputRef as any}
         type='file'
         name='image'
-        onChange={handleChange}
+        onChange={props.onInputChange}
       />
     </ImagePreviewArea>
   );
