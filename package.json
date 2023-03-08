@@ -2,11 +2,19 @@
   "name": "cade-zamora",
   "version": "0.1.0",
   "private": true,
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "dx": "yarn db:generate && yarn db:push && yarn db:seed",
+    "db:seed": "prisma db seed",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push --skip-generate",
+    "db:studio": "prisma studio"
   },
   "dependencies": {
     "@prisma/client": "^4.11.0",
@@ -31,6 +39,8 @@
     "zustand": "^4.3.6"
   },
   "devDependencies": {
-    "@types/styled-components": "^5.1.26"
+    "@faker-js/faker": "^7.6.0",
+    "@types/styled-components": "^5.1.26",
+    "tsx": "^3.12.3"
   }
 }
