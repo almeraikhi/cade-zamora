@@ -16,16 +16,6 @@ export const ImageUpload = (props: ImageUploadProps) => {
 
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   if (!event.target.files) return;
-  //   const file = event.target.files[0];
-  //   // keep the file in the store for later use with the forms
-  //   imageUploadStore.set.image(file);
-  //   // create a url to display the image
-  //   const fileLoaded = URL.createObjectURL(file);
-  //   setTmpImage(fileLoaded);
-  // };
-
   useEffect(() => {
     console.log('image url', props.imageUrl);
   }, [props.imageUrl]);

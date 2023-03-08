@@ -20,6 +20,7 @@ import { SelectField } from '@/components/composite/SelectField/SelectField';
 import { TextField } from '@/components/composite/TextField/TextField';
 import { imageUploadStore } from '../ImageUpload/imageUploadStore';
 import axios from 'axios';
+import { getBaseUrl } from '@/utils/getBaseUrl';
 
 export const CreatePersonForm = () => {
   const [hasErrors, setHasErrors] = useState(false);
@@ -53,8 +54,7 @@ export const CreatePersonForm = () => {
           const formData = new FormData();
           formData.append('image', toBeUploadedImage);
           const { data } = await axios.post<{ path: string }>(
-            // TODO: change this to be dynamic
-            'http://localhost:3000/api/upload',
+            `${getBaseUrl()}/api/upload`,
             formData
           );
           imageUploadStore.set.image(null);

@@ -23,6 +23,7 @@ import { SelectField } from '@/components/composite/SelectField/SelectField';
 import { MenuItem } from '@mui/material';
 import { imageUploadStore } from '../ImageUpload/imageUploadStore';
 import axios from 'axios';
+import { getBaseUrl } from '@/utils/getBaseUrl';
 
 export interface EditPersonFormProps {
   initialData: PersonGetOneOutput;
@@ -54,8 +55,7 @@ export const EditPersonForm = ({ initialData }: EditPersonFormProps) => {
           const formData = new FormData();
           formData.append('image', toBeUploadedImage);
           const { data } = await axios.post<{ path: string }>(
-            // TODO: change this to be dynamic
-            'http://localhost:3000/api/upload',
+            `${getBaseUrl()}/api/upload`,
             formData
           );
 
