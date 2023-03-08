@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ImageUpload } from '../ImageUpload/ImageUpload';
 // import { TextField } from '@/components/composite/TextField/TextField';
 import { Button } from '@/components/elements';
@@ -18,8 +18,11 @@ import { addInputSchema } from '@/dtos/person';
 import { MenuItem } from '@mui/material';
 import { SelectField } from '@/components/composite/SelectField/SelectField';
 import { TextField } from '@/components/composite/TextField/TextField';
+import { PersonForm } from '../PersonForm/PersonForm';
 
 export const CreatePersonForm = () => {
+  const [hasErrors, setHasErrors] = useState(false);
+
   const setIsOpen = createPersonStore.set.isOpen;
   // initialize the context to be able to invalidate our query
   const context = trpc.useContext();
@@ -45,8 +48,11 @@ export const CreatePersonForm = () => {
     },
   });
 
+  /**
+   * When the errors change, update the `hasErrors` state
+   */
   useEffect(() => {
-    console.log('errors', errors);
+    setHasErrors(Object.keys(errors).length > 0);
   }, [errors]);
 
   return (
@@ -96,7 +102,9 @@ export const CreatePersonForm = () => {
         </ImageContainer>
       </Container>
       <ButtonArea>
-        <Button type='submit'>Add Person</Button>
+        <Button disabled={hasErrors} type='submit'>
+          Add Person
+        </Button>
       </ButtonArea>
     </Form>
   );

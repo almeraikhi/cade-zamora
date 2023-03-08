@@ -5,7 +5,8 @@ import { ImageUploadPrompt } from './ImageUploadPrompt';
 
 export type ImageUploadProps = {
   name: string;
-  imageUrl: string;
+  imageUrl: string | null;
+  color: string;
 };
 
 export const ImageUpload = (props: ImageUploadProps) => {

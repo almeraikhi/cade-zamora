@@ -40,6 +40,8 @@ export const EditPersonForm = ({ initialData }: EditPersonFormProps) => {
       age: 0,
       gender: '' as Gender,
       address: '',
+      imageUrl: '' as string | null,
+      color: '',
     },
     onSubmit: (values) => {
       if (!initialData) return;
@@ -59,8 +61,8 @@ export const EditPersonForm = ({ initialData }: EditPersonFormProps) => {
    */
   useEffect(() => {
     if (!initialData) return;
-    const { name, age, gender, address } = initialData;
-    setValues({ name, age, gender, address });
+    const { name, age, gender, address, imageUrl, color } = initialData;
+    setValues({ name, age, gender, address, imageUrl, color });
   }, [initialData, isOpen]);
 
   return (
@@ -106,7 +108,11 @@ export const EditPersonForm = ({ initialData }: EditPersonFormProps) => {
           />
         </FieldsContainer>
         <ImageContainer>
-          <ImageUpload name={values.name} imageUrl='' />
+          <ImageUpload
+            name={values.name}
+            imageUrl={values.imageUrl}
+            color={values.color}
+          />
         </ImageContainer>
       </Container>
       <ButtonArea>

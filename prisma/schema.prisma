@@ -23,6 +23,7 @@ model Person {
   gender    Gender
   address   String
   imageUrl  String?
+  color     String   @default("#ea005e")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
