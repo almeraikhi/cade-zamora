@@ -68,7 +68,7 @@ export const CreatePersonForm = () => {
             name='age'
             value={values.age}
             onChange={handleChange}
-            errorMessage={errors.name}
+            errorMessage={errors.age}
           />
           <SelectField
             label='gender'
@@ -88,7 +88,7 @@ export const CreatePersonForm = () => {
             name='address'
             value={values.address}
             onChange={handleChange}
-            errorMessage={errors.name}
+            errorMessage={errors.address}
           />
         </FieldsContainer>
         <ImageContainer>
