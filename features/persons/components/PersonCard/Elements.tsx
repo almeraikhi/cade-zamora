@@ -9,6 +9,7 @@ export const Container = styled.div`
   display: flex;
   flex-direction: row;
   gap: 10px;
+  cursor: pointer;
   :hover {
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.25);
   }

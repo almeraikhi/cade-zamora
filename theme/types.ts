@@ -8,6 +8,7 @@ export type Palette = {
 export type Theme = {
   palette: {
     primary: Palette;
+    warning: Palette;
     text: {
       primary: string;
       secondary: string;

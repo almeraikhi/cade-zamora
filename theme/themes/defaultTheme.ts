@@ -8,6 +8,12 @@ export const defaultTheme: Theme = {
       dark: 'rgba(0, 0, 0, 0.87)',
       contrastText: '#fff',
     },
+    warning: {
+      main: '#E74856',
+      light: '#E74856',
+      dark: '#E74856',
+      contrastText: '#fff',
+    },
     text: {
       primary: 'rgba(0, 0, 0, 0.87)',
       secondary: 'rgba(0, 0, 0, 0.60)',

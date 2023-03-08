@@ -12,3 +12,5 @@ export const addInputSchema = z.object({
   }),
   address: z.string(),
 });
+
+export const updateInputSchema = addInputSchema.extend({ id: z.string() });
