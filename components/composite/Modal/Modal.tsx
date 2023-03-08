@@ -2,9 +2,17 @@ import React from 'react';
 import { Backdrop, Paper } from './Elements';
 import { ModalProps } from './types';
 
-export const Modal = ({ children }: ModalProps) => {
+export const Modal = ({ children, open, onClose }: ModalProps) => {
   return (
-    <Backdrop>
+    <Backdrop
+      open={open}
+      onClick={(event) => {
+        // this is to ensure that the modal will only close if we click on the backdrop, not on the modal itself
+        if (event.target === event.currentTarget) {
+          onClose?.();
+        }
+      }}
+    >
       <Paper>{children}</Paper>
     </Backdrop>
   );

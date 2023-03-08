@@ -1,13 +1,17 @@
 import styled from 'styled-components';
 
-export const Backdrop = styled.div`
+export type BackdropProps = {
+  open?: boolean;
+};
+
+export const Backdrop = styled.div<BackdropProps>`
+  display: ${({ open }) => (open ? 'flex' : 'none')};
   position: absolute;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.25);
-  display: flex;
   align-items: center;
   justify-content: center;
   z-index: ${({ theme }) => theme.zIndex.backdrop};
