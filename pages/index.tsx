@@ -1,21 +1,20 @@
-import { PersonCard } from '@/features/persons/components/PersonCard';
-import React from 'react';
-import { Inter } from 'next/font/google';
-
-const inter = Inter({ subsets: ['latin'] });
+import { AlertConfirmationModal } from '@/components/composite/AlertConfirmationModal/AlertConfirmationModal';
+import { Header } from '@/components/composite/Header';
+import { CardsGrid } from '@/features/persons/components/CardsGrid';
+import { CreatePersonModal } from '@/features/persons/components/CreatePerson/CreatePersonModal';
+import { EditPersonModal } from '@/features/persons/components/EditPerson/EditPersonModal';
 
 const Page = () => {
   return (
-    <main className={inter.className}>
-      <PersonCard
-        id='1'
-        name='Ahmed Ali Khamees'
-        age={24}
-        gender='male'
-        address='13th Street, Khalifa City, Abu Dhabi'
-        imageUrl='/images/female_a.png'
-      />
-    </main>
+    <>
+      <Header />
+      <div style={{ paddingTop: 50 }}>
+        <CardsGrid />
+      </div>
+      <CreatePersonModal />
+      <EditPersonModal />
+      <AlertConfirmationModal />
+    </>
   );
 };
 

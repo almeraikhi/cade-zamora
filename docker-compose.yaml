@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  app:
+    image: test-app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/mydb?schema=public
+    networks:
+      - myapp-network
+
+  db:
+    image: postgres:13.6
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: mydb
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - myapp-network
+
+networks:
+  myapp-network:
+
+volumes:
+  db-data:
