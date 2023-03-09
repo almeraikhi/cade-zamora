@@ -2,13 +2,17 @@ version: '3'
 
 services:
   app:
-    image: test-app
+    image: eriexn/cade-zamora:latest
     ports:
       - "3000:3000"
     depends_on:
       - db
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/mydb?schema=public
+      - MINIO_ENDPOINT=host.docker.internal
+      - MINIO_PORT=9000
+      - MINIO_ROOT_USER=minio-root-user
+      - MINIO_ROOT_PASSWORD=minio-root-password
     networks:
       - myapp-network
 
@@ -23,9 +27,24 @@ services:
       - db-data:/var/lib/postgresql/data
     networks:
       - myapp-network
-
+  s3:
+    image: bitnami/minio:2023.2.27
+    ports:
+      - '9500:9000'
+      - '9501:9001'
+    environment:
+      - MINIO_ROOT_USER=minio-root-user
+      - MINIO_ROOT_PASSWORD=minio-root-password
+      - MINIO_SERVER_ACCESS_KEY=minio-access-key
+      - MINIO_SERVER_SECRET_KEY=minio-secret-key
+      - MINIO_DEFAULT_BUCKETS=images
+    networks:
+      - myapp-network
+    volumes:
+      - minio-data:/data
 networks:
   myapp-network:
 
 volumes:
   db-data:
+  minio-data:

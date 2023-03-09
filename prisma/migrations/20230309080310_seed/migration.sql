@@ -1,0 +1,5 @@
+insert into "Person" ("id", "name", "age", "gender", "address", "color", "updatedAt") values ('3ce8b544-3f51-4cfc-a205-de927f0eb685', 'Dina Bernhardi', 28, 'female', 'PO Box 68231', '#550', NOW());
+insert into "Person" ("id", "name", "age", "gender", "address", "color", "updatedAt") values ('ff69d233-49ee-47b4-9867-fde02caec9b9', 'Addison Diaper', 39,'female', '8th Floor', '#d85', NOW());
+insert into "Person" ("id", "name", "age", "gender", "address", "color", "updatedAt") values ('bab495c4-99a1-4d44-b310-df63ce02fef4', 'Vinnie Scown', 24,'female', 'PO Box 75120', '#239', NOW());
+insert into "Person" ("id", "name", "age", "gender", "address", "color", "updatedAt") values ('c84bf646-ba3c-44f5-ae5e-f28cefac9f01', 'Judie Gofford', 54,'female', 'Room 1983', '#13e', NOW());
+insert into "Person" ("id", "name", "age", "gender", "address", "color", "updatedAt") values ('15117967-2341-4be6-b60d-b586e838cdb9', 'Lenka Haylands', 34,'female', 'PO Box 46598', '#057', NOW());

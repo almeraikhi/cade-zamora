@@ -38,6 +38,7 @@ export const ImageUpload = (props: ImageUploadProps) => {
         type='file'
         name='image'
         onChange={props.onInputChange}
+        accept='.gif,.jpeg,.jpg,.png,.webp'
       />
     </ImagePreviewArea>
   );
