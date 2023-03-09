@@ -13,7 +13,6 @@ services:
       - MINIO_PORT=9000
       - MINIO_ROOT_USER=minio-root-user
       - MINIO_ROOT_PASSWORD=minio-root-password
-      - NEXT_PUBLIC_MINIO_URL=http://localhost:9500
     networks:
       - myapp-network
 
@@ -29,7 +28,7 @@ services:
     networks:
       - myapp-network
   s3:
-    image: bitnami/minio:latest
+    image: bitnami/minio:2023.2.27
     ports:
       - '9500:9000'
       - '9501:9001'
@@ -41,8 +40,11 @@ services:
       - MINIO_DEFAULT_BUCKETS=images
     networks:
       - myapp-network
+    volumes:
+      - minio-data:/data
 networks:
   myapp-network:
 
 volumes:
   db-data:
+  minio-data:

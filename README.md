@@ -1,9 +1,16 @@
 # Overview
-// todo
+Cade-Zamora is a simple CRUD app built with:
+* nextjs
+* prisma
+
+It has integrations with:
+
+* postgreSQL: database
+* minio: s3 storage for images upload
 
 # Docker Deployment
 
-in order to deploy the app in your docker environment, you will need the following installed:
+In order to deploy the app in your docker environment, you will need the following installed:
 
 * docker
 * docker compose
@@ -72,6 +79,11 @@ NEXT_PUBLIC_MINIO_URL="http://localhost:9000"
 yarn s3:up
 ```
 
+This will a container with Minio in it, it will use the ports 9000 and 9001.
+
+> if your system already has the ports `9000` or `9001` in use, then you will [need to follow this guide](#change-the-development-minio-port).
+
+<!-- Change the development Minio port -->
 
 ## Start the database
 
@@ -95,7 +107,7 @@ This command will:
 * reset the database
 * initialize prisma
 * seed the database with random data
-* reset s3 storage
+* reset minio storage
 
 Use this command whenever you want the app to go back to the "initial state".
 
@@ -112,7 +124,7 @@ Our development database, which can be brought with the command `yarn db:up` wil
 
 
 ## modify the docker compose file
-<h5 a><strong><code>integrations/docker-compose.yaml</code></strong></h5>
+<h5 a><strong><code>integrations/postgres/docker-compose.yaml</code></strong></h5>
 
 ```yaml
 version: '3'
@@ -143,6 +155,37 @@ volumes:
 ```bash
 DATABASE_URL="postgresql://postgres:postgres@localhost:5444/mydb?schema=public"
                                                       #👆 change this value         
-NODE_ENV="development"
 ```
 
+# Change the development Minio port
+Our development s3 storage, which can be brought with the command `yarn s3:up` will run at the ports `9000` for the api and `9001` for the WebUI. If your system already has those port in use, or if you want to change them, then you will need to change two files.
+
+## modify the docker compose file
+
+<h5 a><strong><code>integrations/minio/docker-compose.yaml</code></strong></h5>
+
+```yaml
+version: '3'
+
+services:
+  s3:
+    image: bitnami/minio:latest
+    ports:
+      - '9000:9000'
+        #👆 change this value for the api 
+      - '9001:9001'
+        #👆 change this value for the webui
+    environment:
+      - MINIO_ROOT_USER=minio-root-user
+      - MINIO_ROOT_PASSWORD=minio-root-password
+      - MINIO_SERVER_ACCESS_KEY=minio-access-key
+      - MINIO_SERVER_SECRET_KEY=minio-secret-key
+      - MINIO_DEFAULT_BUCKETS=images
+```
+
+<h5 a><strong><code>.env</code></strong></h5>
+
+```bash
+MINIO_PORT="9000"
+          #👆 change this value to match the one you have set for the api port         
+```
