@@ -1,4 +1,7 @@
 # Overview
+
+![app screenshot](./docs/app.png)
+
 Cade-Zamora is a simple CRUD app built with:
 * nextjs
 * prisma
@@ -7,6 +10,10 @@ It has integrations with:
 
 * postgreSQL: database
 * minio: s3 storage for images upload
+
+## Figma 
+The figma file that had the design of this app can be viewed here:
+<https://www.figma.com/file/rR1x0r8RwQARn2dR3abj1A/Untitled?node-id=0%3A1&t=s7VSJbrc12zI4WEA-1>
 
 # Docker Deployment
 
