@@ -18,7 +18,7 @@ import { addInputSchema } from '@/dtos/person';
 import { PersonGetOneOutput } from '@/server/client';
 import { editPersonStore } from '../../stores/editPersonStore';
 import { useUpdatePerson } from '../../api/updatePerson';
-import { useOpenDeleteConfirmationModal } from '@/features/hooks/useOpenDeleteConfirmationModal';
+import { useOpenDeleteConfirmationModal } from '@/features/persons/hooks/useOpenDeleteConfirmationModal';
 import { SelectField } from '@/components/composite/SelectField/SelectField';
 import { MenuItem } from '@mui/material';
 import { imageUploadStore } from '../ImageUpload/imageUploadStore';
