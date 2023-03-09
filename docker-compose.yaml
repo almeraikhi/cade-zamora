@@ -2,7 +2,9 @@ version: '3'
 
 services:
   app:
-    image: eriexn/cade-zamora:0.1.0
+    image: eriexn/cade-zamora:latest
+    # volumes:
+      # - app-uploads:/app/public/uploads
     ports:
       - "3000:3000"
     depends_on:
@@ -29,3 +31,4 @@ networks:
 
 volumes:
   db-data:
+  # app-uploads:

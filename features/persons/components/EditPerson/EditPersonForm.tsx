@@ -24,6 +24,7 @@ import { MenuItem } from '@mui/material';
 import { imageUploadStore } from '../ImageUpload/imageUploadStore';
 import axios from 'axios';
 import { getBaseUrl } from '@/utils/getBaseUrl';
+import { uploadImageToS3 } from '@/utils/uploadImageToS3';
 
 export interface EditPersonFormProps {
   initialData: PersonGetOneOutput;
@@ -52,14 +53,8 @@ export const EditPersonForm = ({ initialData }: EditPersonFormProps) => {
         if (!initialData) return;
 
         if (toBeUploadedImage) {
-          const formData = new FormData();
-          formData.append('image', toBeUploadedImage);
-          const { data } = await axios.post<{ path: string }>(
-            `${getBaseUrl()}/api/upload`,
-            formData
-          );
-
-          values.imageUrl = data.path;
+          const imageUrl = await uploadImageToS3(toBeUploadedImage);
+          values.imageUrl = imageUrl;
         }
 
         updatePerson.mutate({ id: initialData.id, ...values });

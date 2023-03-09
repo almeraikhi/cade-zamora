@@ -8,41 +8,7 @@ in order to deploy the app in your docker environment, you will need the followi
 * docker
 * docker compose
 
-You can then create a `docker-compose.yaml` file with the following details
-
-```yaml
-version: '3'
-
-services:
-  app:
-    image: eriexn/cade-zamora:latest
-    ports:
-      - "3000:3000"
-    depends_on:
-      - db
-    environment:
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/mydb?schema=public
-    networks:
-      - myapp-network
-
-  db:
-    image: postgres:13.6
-    restart: always
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: mydb
-    volumes:
-      - db-data:/var/lib/postgresql/data
-    networks:
-      - myapp-network
-
-networks:
-  myapp-network:
-
-volumes:
-  db-data:
-```
+You can then create a `docker-compose.yaml` similar to the [one found at the root of the repository here.](./docker-compose.yaml)
 
 finally, run the following command in the terminal at where you created the `docker-compose.yaml` file:
 

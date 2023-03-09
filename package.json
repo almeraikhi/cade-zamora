@@ -10,13 +10,16 @@
     "build": "next build",
     "start": "yarn db:migrate && node server.js",
     "lint": "next lint",
-    "dx": "yarn db:generate && yarn db:push && yarn db:seed",
-    "db:up": "docker compose -f ./integrations/docker-compose.yaml up -d",
+    "dx": "yarn s3:clean && yarn uploads:clean && yarn db:generate && yarn db:push && yarn db:seed",
+    "s3:up": "docker compose -f ./integrations/minio/docker-compose.yaml up -d",
+    "s3:clean": "tsx ./scripts/cleanMinio.ts",
+    "db:up": "docker compose -f ./integrations/postgres/docker-compose.yaml up -d",
     "db:seed": "prisma db seed",
     "db:generate": "prisma generate",
     "db:push": "prisma db push --skip-generate --accept-data-loss --force-reset",
     "db:migrate": "prisma migrate deploy",
-    "db:studio": "prisma studio"
+    "db:studio": "prisma studio",
+    "uploads:clean": "rm -rf ./public/uploads/*"
   },
   "dependencies": {
     "@emotion/react": "^11.10.6",
@@ -38,6 +41,8 @@
     "eslint": "8.35.0",
     "eslint-config-next": "13.2.3",
     "formik": "^2.2.9",
+    "mime-types": "^2.1.35",
+    "minio": "^7.0.32",
     "multer": "^1.4.5-lts.1",
     "next": "13.2.3",
     "next-connect": "^0.13.0",
@@ -45,17 +50,22 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-joyride": "^2.5.3",
+    "sharp": "^0.31.3",
     "styled-components": "^5.3.8",
     "typescript": "4.9.5",
     "usehooks-ts": "^2.9.1",
+    "uuid": "^9.0.0",
     "zod": "^3.21.4",
     "zod-formik-adapter": "^1.2.0",
     "zustand": "^4.3.6"
   },
   "devDependencies": {
     "@faker-js/faker": "^7.6.0",
+    "@types/mime-types": "^2.1.1",
+    "@types/minio": "^7.0.17",
     "@types/multer": "^1.4.7",
     "@types/styled-components": "^5.1.26",
+    "@types/uuid": "^9.0.1",
     "tsx": "^3.12.3"
   }
 }

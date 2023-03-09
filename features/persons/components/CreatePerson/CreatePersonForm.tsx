@@ -22,6 +22,7 @@ import { imageUploadStore } from '../ImageUpload/imageUploadStore';
 import axios from 'axios';
 import { getBaseUrl } from '@/utils/getBaseUrl';
 import { useTour } from '@reactour/tour';
+import { uploadImageToS3 } from '@/utils/uploadImageToS3';
 
 export const CreatePersonForm = () => {
   const [hasErrors, setHasErrors] = useState(false);
@@ -51,21 +52,17 @@ export const CreatePersonForm = () => {
         imageUrl: '' as string | null,
       },
       onSubmit: async (values) => {
-        if (toBeUploadedImage) {
-          const formData = new FormData();
-          formData.append('image', toBeUploadedImage);
-          const { data } = await axios.post<{ path: string }>(
-            `${getBaseUrl()}/api/upload`,
-            formData
-          );
-          imageUploadStore.set.image(null);
-
-          values.imageUrl = data.path;
-        } else {
-          values.imageUrl = null;
+        try {
+          if (toBeUploadedImage) {
+            const imageUrl = await uploadImageToS3(toBeUploadedImage);
+            values.imageUrl = imageUrl;
+          } else {
+            values.imageUrl = null;
+          }
+          addPerson.mutate(values);
+        } catch (error) {
+          console.log('error', error);
         }
-
-        addPerson.mutate(values);
       },
     });
 
