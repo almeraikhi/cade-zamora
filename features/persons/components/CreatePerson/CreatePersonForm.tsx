@@ -21,6 +21,7 @@ import { TextField } from '@/components/composite/TextField/TextField';
 import { imageUploadStore } from '../ImageUpload/imageUploadStore';
 import axios from 'axios';
 import { getBaseUrl } from '@/utils/getBaseUrl';
+import { useTour } from '@reactour/tour';
 
 export const CreatePersonForm = () => {
   const [hasErrors, setHasErrors] = useState(false);
@@ -94,7 +95,7 @@ export const CreatePersonForm = () => {
   return (
     <Form onSubmit={handleSubmit}>
       <Container>
-        <FieldsContainer>
+        <FieldsContainer id='create-person-first-step'>
           <TextField
             required
             label='Name'
@@ -133,7 +134,7 @@ export const CreatePersonForm = () => {
             errorMessage={errors.address}
           />
         </FieldsContainer>
-        <ImageContainer>
+        <ImageContainer id='create-person-second-step'>
           <ImageUpload
             name={values.name}
             imageUrl={values.imageUrl}

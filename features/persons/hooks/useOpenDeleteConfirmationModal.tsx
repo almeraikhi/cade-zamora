@@ -1,6 +1,6 @@
 import { alterConfirmationStore } from '@/components/composite/AlertConfirmationModal/alertConfirmationStore';
 import { PersonGetOneOutput } from '@/server/client';
-import { useDeletePerson } from '../persons/api/deletePerson';
+import { useDeletePerson } from '../api/deletePerson';
 
 export const useOpenDeleteConfirmationModal = () => {
   const deletePerson = useDeletePerson();
