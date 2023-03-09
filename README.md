@@ -1,38 +1,166 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Overview
+// todo
 
-## Getting Started
+# Docker Deployment
 
-First, run the development server:
+in order to deploy the app in your docker environment, you will need the following installed:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+* docker
+* docker compose
+
+You can then create a `docker-compose.yaml` file with the following details
+
+```yaml
+version: '3'
+
+services:
+  app:
+    image: eriexn/cade-zamora:latest
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/mydb?schema=public
+    networks:
+      - myapp-network
+
+  db:
+    image: postgres:13.6
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: mydb
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - myapp-network
+
+networks:
+  myapp-network:
+
+volumes:
+  db-data:
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+finally, run the following command in the terminal at where you created the `docker-compose.yaml` file:
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+```
+docker compose up -d
+```
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+if `docker compose` is an unrecognized command in your system, then you are probably using the older version of docker compose. You can use this command instead:
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+```
+docker-compose up -d
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+# Docker Build
 
-## Learn More
+Build the image
 
-To learn more about Next.js, take a look at the following resources:
+```
+docker build -t eriexn/cade-zamora:latest .
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+# Development Guide
+## prerequisites
 
-## Deploy on Vercel
+The development environment expects that you have the following installed:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+* NodeJs
+* yarn
+* docker 
+* git
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## clone the repository
+start with cloning the repository. You can use your desired git tool, or run the following command:
+
+```bash
+git clone https://github.com/riexn/cade-zamora.git
+```
+
+## Install the dependencies
+```
+yarn
+```
+
+## create `.env` file
+The `.env` has values for the database connection and the node environment we're running. Initialize your file with the following:
+
+```bash
+DATABASE_URL="postgresql://postgres:postgres@localhost:5444/mydb?schema=public"
+NODE_ENV="development"
+```
+
+
+## Start the database
+
+```bash
+yarn db:up
+```
+This will start a container with postgres 13.6 in it. It will use port `5444`.
+
+> if your system already has the port `5444` in use, then you will [need to follow this guide](#change-the-development-database-port).
+
+
+## Initialize prisma
+
+
+```
+yarn dx
+```
+
+This command will reset out database, initialize Prisma and it will seed the database with random data.
+
+Use this command whenever you want the app to go back to the "initial state".
+
+## Run the app in development mode
+
+```
+yarn dev
+```
+
+It will start the app on `http://localhost:3000`
+
+# Change the development Database port
+Our development database, which can be brought with the command `yarn db:up` will run at the port `5444`. If your system already has that port in use, or if you want to change it, then you will need to change two files.
+
+
+## modify the docker compose file
+<h5 a><strong><code>integrations/docker-compose.yaml</code></strong></h5>
+
+```yaml
+version: '3'
+
+services:
+  db:
+    image: postgres:13.6
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: mydb
+    ports:
+      - 5444:5432 
+        #👆 change this value
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+volumes:
+  db-data:
+```
+## modify the .env file
+
+> Note that the .env file is something you would have created by [following the development guide](#development-guide).
+
+<h5 a><strong><code>.env</code></strong></h5>
+
+```bash
+DATABASE_URL="postgresql://postgres:postgres@localhost:5444/mydb?schema=public"
+                                                      #👆 change this value         
+NODE_ENV="development"
+```
+
