@@ -8,13 +8,14 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "yarn db:migrate && node server.js",
     "lint": "next lint",
     "dx": "yarn db:generate && yarn db:push && yarn db:seed",
     "db:up": "docker compose -f ./integrations/docker-compose.yaml up -d",
     "db:seed": "prisma db seed",
     "db:generate": "prisma generate",
     "db:push": "prisma db push --skip-generate --accept-data-loss --force-reset",
+    "db:migrate": "prisma migrate deploy",
     "db:studio": "prisma studio"
   },
   "dependencies": {
