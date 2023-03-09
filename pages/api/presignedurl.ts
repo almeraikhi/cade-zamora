@@ -1,14 +1,6 @@
 import nc from 'next-connect';
 import { NextApiRequest, NextApiResponse } from 'next';
-import * as Minio from 'minio';
-
-const minIoClient = new Minio.Client({
-  endPoint: 'localhost',
-  port: 9000,
-  useSSL: false,
-  accessKey: 'minio-root-user',
-  secretKey: 'minio-root-password',
-});
+import { minIoClient } from '@/server/minio';
 
 const apiRoute = nc<NextApiRequest, NextApiResponse>({
   onError(error, req, res) {

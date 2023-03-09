@@ -11,14 +11,18 @@ export const getFileOriginalExtension = (file: File) => {
 export const uploadImageToS3 = async (file: File) => {
   const extension = getFileOriginalExtension(file);
   const name = `${generateUUIDv4()}.${extension}`;
-  const imageUrl = `${process.env.NEXT_PUBLIC_MINIO_URL}/images/${name}`;
+  // const imageUrl = `${process.env.NEXT_PUBLIC_MINIO_URL}/images/${name}`;
   const { data } = await axios.post<{ presignedUrl: string }>(
     `${getBaseUrl()}/api/presignedurl`,
     {
       name: name,
     }
   );
+
   await axios.put(data.presignedUrl, file);
 
-  return imageUrl;
+  const host = data.presignedUrl.split('/').slice(0, 3).join('/');
+  const s3ImageUrl = `${host}/images/${name}`;
+
+  return s3ImageUrl;
 };

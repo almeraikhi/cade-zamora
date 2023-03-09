@@ -58,7 +58,18 @@ The `.env` has values for the database connection and the node environment we're
 
 ```bash
 DATABASE_URL="postgresql://postgres:postgres@localhost:5444/mydb?schema=public"
+MINIO_ENDPOINT="localhost"
+MINIO_PORT="9000"
+MINIO_ROOT_PASSWORD="minio-root-password"
+MINIO_ROOT_USER="minio-root-user"
 NODE_ENV="development"
+
+NEXT_PUBLIC_MINIO_URL="http://localhost:9000"
+```
+
+## Start Minio (S3 Storage)
+```
+yarn s3:up
 ```
 
 
@@ -72,14 +83,19 @@ This will start a container with postgres 13.6 in it. It will use port `5444`.
 > if your system already has the port `5444` in use, then you will [need to follow this guide](#change-the-development-database-port).
 
 
-## Initialize prisma
+## Initialize development environment
 
 
 ```
 yarn dx
 ```
 
-This command will reset out database, initialize Prisma and it will seed the database with random data.
+This command will:
+
+* reset the database
+* initialize prisma
+* seed the database with random data
+* reset s3 storage
 
 Use this command whenever you want the app to go back to the "initial state".
 

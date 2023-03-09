@@ -8,6 +8,11 @@ const { z } = require('zod');
 /*eslint sort-keys: "error"*/
 const envSchema = z.object({
   DATABASE_URL: z.string().url(),
+  MINIO_ENDPOINT: z.string(),
+  MINIO_PORT: z.string(),
+  MINIO_ROOT_PASSWORD: z.string(),
+  MINIO_ROOT_USER: z.string(),
+  NEXT_PUBLIC_MINIO_URL: z.string().url(),
   NODE_ENV: z.enum(['development', 'test', 'production']),
 });
 

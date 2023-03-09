@@ -1,5 +1,8 @@
 import * as Minio from 'minio';
 
+/**
+ * Note that this script is not a part of the project, and it is used only for development purposes.
+ */
 const minIoClient = new Minio.Client({
   endPoint: 'localhost',
   port: 9000,
